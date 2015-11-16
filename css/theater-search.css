@@ -1,0 +1,77 @@
+.thumbnail {
+    position: relative;
+    overflow: hidden;
+    width: 260px;
+    height: 270px;
+}
+
+.caption {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(66, 139, 202, 0.55);
+    width: 100%;
+    height: 100%;
+    padding: 2%;
+    display: none;
+    text-align: center;
+    color: #fff !important;
+    z-index: 2;
+}
+
+.dropdown dd,
+.dropdown dt {
+    margin: 0px;
+    padding: 0px;
+}
+
+.dropdown ul {
+    margin: -1px 0 0 0;
+}
+
+.dropdown dd {
+    position: relative;
+}
+
+.dropdown dt a {
+    display: block;
+    overflow: hidden;
+    width: 100px;
+}
+
+.dropdown dt a span,
+.multiSel span {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 3px 2px 0;
+}
+
+.dropdown dd ul {
+    background-color: #fff;
+    border-left: solid;
+    border-right: solid;
+    border-bottom: solid;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-top: hidden;
+    display: none;
+    left: -10px;
+    padding: 2px 15px 2px 5px;
+    position: absolute;
+    top: -2px;
+    width: 120px;
+    list-style: none;
+    overflow: auto;
+}
+
+.dropdown span.value {
+    display: none;
+}
+
+.dropdown dd ul li a {
+    padding: 5px;
+    display: block;
+}
+
+.dropdown dd ul li a:hover {
+    background-color: #fff;
+}
