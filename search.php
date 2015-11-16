@@ -11,12 +11,10 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link href="css/theater-base.css" rel="stylesheet">
     <link href="css/theater-search.css" rel="stylesheet">
-    <script src="js/jquery.js"></script>
-    <script src="js/theater.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -24,132 +22,128 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <?php
-//classes and functions defined here
+    //classes and functions defined here
 
-//Data access obejects
+    //Data access obejects
 
-//DAO for costume
-class Costume{
-    var $costumeid;
-    var $pattern;
-    var $year;
-    var $gender;
-    var $season;
-    var $description;
-    var $location;
-    var $size;
-    var $material;
-    var $type;
-    var $memo;
-    var $color;
-    var $mainphoto;
+    //DAO for costume
+    class Costume{
+        var $costumeid;
+        var $pattern;
+        var $year;
+        var $gender;
+        var $season;
+        var $description;
+        var $location;
+        var $size;
+        var $material;
+        var $type;
+        var $memo;
+        var $color;
+        var $mainphoto;
 
-    public function __construct( array $cfg){
-        foreach($cfg as $k=>$v){
-            $this->{$k}=$v;
+        public function __construct( array $cfg){
+            foreach($cfg as $k=>$v){
+                $this->{$k}=$v;
+            }
         }
     }
-}
 
 
-//select query builder, naive version
-//TODO: add more features to fit for more complex selections
-function select_sql($dict) {
-    if ( empty($dict)){
-        $sql_string = "select * from costume";
-    }
-    else{
-        $sql_string = "select * from costume where ";
-        foreach ($dict as $k => $v) {
-            $data_type = gettype($v);
-            if ($data_type == "string"){
-                $v = "'{$v}'";
-            }
-            elseif ($data_type == "integer" or $data_type == "double") {
-                $v = (string) $v;
-            }
-            $sql_string = "{$sql_string}{$k} = {$v} and ";
+    //select query builder, naive version
+    //TODO: add more features to fit for more complex selections
+    function select_sql($dict) {
+        if ( empty($dict)){
+            $sql_string = "select * from costume";
         }
-        $sql_string = substr($sql_string, 0, -5);
+        else{
+            $sql_string = "select * from costume where ";
+            foreach ($dict as $k => $v) {
+                $data_type = gettype($v);
+                if ($data_type == "string"){
+                    $v = "'{$v}'";
+                }
+                elseif ($data_type == "integer" or $data_type == "double") {
+                    $v = (string) $v;
+                }
+                $sql_string = "{$sql_string}{$k} = {$v} and ";
+            }
+            $sql_string = substr($sql_string, 0, -5);
+        }
+        return $sql_string;
     }
-    return $sql_string;
-}
 
-//thumbnail html render 
-function render_html_for_thumbnail($path, $desc){
-    return '<div class="col-md-3">            
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4>Thumbnail Headline</h4>
-                    <p>short thumbnail description</p>
-                    <p><a href="" class="label label-danger" rel="tooltip" title="Zoom">Zoom</a>
-                    <a href="" class="label label-default" rel="tooltip" title="Download now">Download</a></p>
+    //thumbnail html render 
+    function render_html_for_thumbnail($path, $desc){
+        return '<div class="col-md-3">           
+                <div class="thumbnail" style="border-style:hidden">
+                    <img  class="main" src="'.$path.'" alt="...">
+                    <img  class="alt" src="'.substr($path, 0, -4).'-1.jpg"style="display:none">
                 </div>
-                <img src="'.$path.'" alt="...">
-            </div>
-      </div>';
-}
-?>
+                <p style="font-size:12px;padding-left:15px;padding-top:-20px">'.$desc.'</p>
+                </div>';
+    }
+    ?>
 </head>
 
 <body>
     <?php
-//default form values to be NULL
-$pattern = $year = $gender = $season = $size = $material = $type = $color = NULL;
+    //default form values to be NULL
+    $pattern = $year = $gender = $season = $size = $material = $type = $color = NULL;
 
-//filter dict
-$dict = array();
+    //filter dict
+    $dict = array();
 
-//for post method, update all variables
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (! empty($_POST["pattern"])) {
-        $pattern = $_POST["pattern"];
-        $dict["pattern"] = $pattern; 
+    //for post method, update all variables
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (! empty($_POST["pattern"])) {
+            $pattern = $_POST["pattern"];
+            $dict["pattern"] = $pattern; 
+        }
+        if (! empty($_POST["year"])) {
+            $year = (int)$_POST["year"];
+            $dict["year"] = $year; 
+        }
+        if (! empty($_POST["gender"])) {
+            $gender = $_POST["gender"];
+            $dict["gender"] = $gender;       
+        }
+        if (! empty($_POST["season"])) {
+            $season = $_POST["season"];
+            $dict["season"] = $season; 
+        }
+        if (! empty($_POST["size"])) {
+            $size = $_POST["size"];
+            $dict["size"] = $size; 
+        }
+        if (! empty($_POST["material"])) {
+            $material = $_POST["material"];
+            $dict["material"] = $material; 
+        }
+        if (! empty($_POST["type"])) {
+            $type = $_POST["type"];
+            $dict["type"] = $type; 
+        }
+        if (! empty($_POST["color"])) {
+            $color = $_POST["color"];
+            $dict["color"] = $color; 
+        }
     }
-    if (! empty($_POST["year"])) {
-        $year = (int)$_POST["year"];
-        $dict["year"] = $year; 
-    }
-    if (! empty($_POST["gender"])) {
-        $gender = $_POST["gender"];
-        $dict["gender"] = $gender;       
-    }
-    if (! empty($_POST["season"])) {
-        $season = $_POST["season"];
-        $dict["season"] = $season; 
-    }
-    if (! empty($_POST["size"])) {
-        $size = $_POST["size"];
-        $dict["size"] = $size; 
-    }
-    if (! empty($_POST["material"])) {
-        $material = $_POST["material"];
-        $dict["material"] = $material; 
-    }
-    if (! empty($_POST["type"])) {
-        $type = $_POST["type"];
-        $dict["type"] = $type; 
-    }
-    if (! empty($_POST["color"])) {
-        $color = $_POST["color"];
-        $dict["color"] = $color; 
-    }
-}
 
-//get 
-$query = select_sql($dict);
+    //get 
+    //$query = select_sql($dict);
+    $query = "select * from costume";
+    $costumes = array();
+    $dbconn = pg_connect("host=turing.centre.edu dbname=theaterDB user=visitorDrama password=Costumes4All")
+                    or die('Could not connect: ' . pg_last_error());
 
-//$costumes = array();
-//$dbconn = pg_connect("host=turing.centre.edu dbname=theaterDB user=visitorDrama password=Costumes4All")
-//                or die('Could not connect: ' . pg_last_error());
-
-//1.query
-//$result = pg_query($query) or die('Query failed: ' . pg_last_error());
-//2.convert to objects
-//while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-//    $costumes[] = new Costume($line);
-//}
-?>
+    //1.query
+    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+    //2.convert to objects
+    while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+        $costumes[] = new Costume($line);
+    }
+    ?>
     <!-- Navigation -->
     <script> 
     $(function(){
@@ -364,41 +358,43 @@ $query = select_sql($dict);
                 <div class="col-lg-12">
                     <h3 class="page-header">Search Results</h3>
                     <?php
-            //if (empty($costumes)){
-            //    echo '<div class="alert alert-warning">
-            //            <strong>Warning!</strong> Indicates a warning that might need attention.
-            //        </div>';
-            //} 
-            ?>
+                    if (empty($costumes)){
+                        echo '<div class="alert alert-warning">
+                                <strong>Warning!</strong> Indicates a warning that might need attention.
+                            </div>';
+                    } 
+                    ?>
                 </div>
                 <?php
-            //if (! empty($costumes)){
-            //    foreach((array)$costumes as $c) {
-            //        $img_path = "photos/{$c->mainphoto}";
-            //        $desc = "Type:{$c->type} Year:{$c->year} Size:{$c->size}";
-            //        echo render_html_for_thumbnail($img_path, $desc);
-            //    }
-            //}   
-            ?>
-                    <!-- test code -->
-                    <?php 
-            echo "<h1>";
-            echo $query;
-            echo "</h1>";
-            $keys = array('pattern', 'season', 'type', 'color', 'size', 'material','gender');
-            foreach ($keys as $key) {
-                if(!empty($_POST[$key])) {
-                    echo $key;
-                    echo '<br>';
-                    foreach($_POST[$key] as $check) {
-                            echo $check; //echoes the value set in the HTML form for each checked checkbox.
-                                         //so, if I were to check 1, 3, and 5 it would echo value 1, value 3, value 5.
-                                         //in your case, it would echo whatever $row['Report ID'] is equivalent to.
+                if (! empty($costumes)){
+                    foreach((array)$costumes as $c) {
+                        $img_path = "photos/{$c->mainphoto}";
+                        $desc = "{$c->gender} {$c->type} {$c->size}<br>{$c->year}";
+                       //echo $desc;
+                        //$img_path = "http://cache.mrporter.com/images/products/635947/635947_mrp_in_l.jpg";
+                        echo render_html_for_thumbnail($img_path, $desc);
                     }
-                    echo '<br>';
+                }   
+                ?>
+                    <!-- test code -->
+                <?php 
+                echo "<h1>";
+                echo $query;
+                echo "</h1>";
+                $keys = array('pattern', 'season', 'type', 'color', 'size', 'material','gender');
+                foreach ($keys as $key) {
+                    if(!empty($_POST[$key])) {
+                        echo $key;
+                        echo '<br>';
+                        foreach($_POST[$key] as $check) {
+                                echo $check; //echoes the value set in the HTML form for each checked checkbox.
+                                             //so, if I were to check 1, 3, and 5 it would echo value 1, value 3, value 5.
+                                             //in your case, it would echo whatever $row['Report ID'] is equivalent to.
+                        }
+                        echo '<br>';
+                    }
                 }
-            }
-            ?>
+                ?>
             </div>
             <hr>
             <!-- Footer -->
@@ -411,6 +407,8 @@ $query = select_sql($dict);
             </footer>
         </div>
         <!-- /.container -->
+        <script src="js/theater.js"></script>
+
 </body>
 
 </html>
