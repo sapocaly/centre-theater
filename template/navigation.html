@@ -1,4 +1,12 @@
 <nav class="navbar navbar-default navbar-fixed-top">
+    <script type="text/javascript">
+    $(".dropdown a").on('click', function() {
+            //$(".dropdown dd ul").slideToggle('fast');
+            //$(this).parentElejment.parentElement.style.display = 'None';
+            $url = $(this).attr('href');
+            window.location = $url;
+        });
+    </script>
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -11,7 +19,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">ABOUT<b class="caret"></b></a>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="http://www.centre.edu">ABOUT<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="http://www.centre.edu">CENTRE COLLEGE</a></li>
                         <li><a href="#">ABOUT SOMETHING</a></li>
@@ -21,11 +29,11 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">ADMIN<b class="caret"></b></a>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="admin.php">ADMIN<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="admin.html#costume">MANAGE COSTUMES</a></li>
-                        <li><a href="admin.html#user">MANAGE USERS</a></li>
-                        <li><a href="admin.html#web">WEBSITE ADMIN</a></li>
+                        <li><a href="admin.php?section=costume">MANAGE COSTUMES</a></li>
+                        <li><a href="admin.php?section=user">MANAGE USERS</a></li>
+                        <li><a href="admin.php?section=overview">WEBSITE ADMIN</a></li>
                     </ul>
                 </li>
                 <li><a href="login.html">LOGIN</a></li>

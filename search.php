@@ -83,13 +83,46 @@
                 <p style="font-size:12px;padding-left:15px;padding-top:-20px">'.$desc.'</p>
                 </div>';
     }
+
+    function query_for($query){
+        $dbconn = pg_connect("host=turing.centre.edu dbname=theaterDB user=visitorDrama password=Costumes4All")
+                        or die('Could not connect: ' . pg_last_error());
+        $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+        return $result;
+    }
+
+    function parse_result_for_value($result, $key){
+        $answer = array();
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            $answer[] = $line[$key];
+        }    
+        return $answer;    
+    }
+
+    function parse_for_filter($big_type){
+        $answer = array();
+        $size_query = "select distinct size from costume where type in (select distinct value from filter where type='".$big_type."')";
+        $size_result = query_for($size_query);
+        $size_option = parse_result_for_value($size_result, 'size');
+        $answer['size'] = $size_option; 
+        $other_options = array("pattern", "season", $big_type, "color", "material");
+        foreach ($other_options as $option) {
+            $option_query = "select value from filter where type = '".$option."'";
+            $option_result = query_for($option_query);
+            $options = parse_result_for_value($option_result, 'value');
+            $answer[$option] = $options;    
+        }
+        return $answer;
+    }
     ?>
 </head>
 
 <body>
+
+
     <?php
     //default form values to be NULL
-    $pattern = $year = $gender = $season = $size = $material = $type = $color = NULL;
+    $pattern = $big_type = $year = $gender = $season = $size = $material = $type = $color = NULL;
 
     //filter dict
     $dict = array();
@@ -104,6 +137,7 @@
             $year = (int)$_POST["year"];
             $dict["year"] = $year; 
         }
+        //index
         if (! empty($_POST["gender"])) {
             $gender = $_POST["gender"];
             $dict["gender"] = $gender;       
@@ -128,22 +162,26 @@
             $color = $_POST["color"];
             $dict["color"] = $color; 
         }
+        //index
+        if (! empty($_POST["big_type"])) {
+            $big_type = $_POST["big_type"];
+            //generate small type
+        }
     }
+
 
     //get 
     //$query = select_sql($dict);
     $query = "select * from costume";
     $costumes = array();
-    $dbconn = pg_connect("host=turing.centre.edu dbname=theaterDB user=visitorDrama password=Costumes4All")
-                    or die('Could not connect: ' . pg_last_error());
-
-    //1.query
-    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
-    //2.convert to objects
+    $result = query_for($query);
     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-        $costumes[] = new Costume($line);
+         $costumes[] = new Costume($line);
     }
+    $filter_dict = parse_for_filter($big_type);
     ?>
+
+
     <!-- Navigation -->
     <script> 
     $(function(){
@@ -160,33 +198,11 @@
                         <div class="panel-body">
                             <form class="form-inline" role="form" action="search.php" method="post">
                                 <div class="form-group">
-                                    <label class="filter-col" style="margin-right:0;" for="pref-perpage">Rows per page:</label>
-                                    <select name="numrow" id="pref-perpage" class="form-control">
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                        <option value="9">9</option>
-                                        <option selected="selected" value="10">10</option>
-                                        <option value="15">15</option>
-                                        <option value="20">20</option>
-                                        <option value="30">30</option>
-                                        <option value="40">40</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                        <option value="200">200</option>
-                                        <option value="300">300</option>
-                                        <option value="400">400</option>
-                                        <option value="500">500</option>
-                                        <option value="1000">1000</option>
-                                    </select>
+                                    <input type="number" min="1" max="10000" name="minyear" class="form-control" size="8" placeholder="FROM">
+                                    <input type="number" min="1" max="10000" name="maxyear" class="form-control" placeholder="TO">
                                 </div>
                                 <!-- form group [rows] -->
                                 <div class="form-group">
-                                    <label class="filter-col" style="margin-right:0;" for="pref-perpage"> Filter:</label>
                                     <div class="form-control">
                                         <dl class="dropdown">
                                             <dt>
@@ -198,18 +214,11 @@
                                             <dd>
                                                 <div class="mutliSelect">
                                                     <ul>
-                                                        <li>
-                                                            <input type="checkbox" name="pattern[]" value="pt1" />pt1</li>
-                                                        <li>
-                                                            <input type="checkbox" name="pattern[]" value="pt2" />pt2</li>
-                                                        <li>
-                                                            <input type="checkbox" name="pattern[]" value="pt3" />pt3</li>
-                                                        <li>
-                                                            <input type="checkbox" name="pattern[]" value="pt4" />pt4</li>
-                                                        <li>
-                                                            <input type="checkbox" name="pattern[]" value="pt5" />pt5</li>
-                                                        <li>
-                                                            <input type="checkbox" name="pattern[]" value="pt6" />pt6</li>
+                                                        <?php
+                                                        foreach ($filter_dict['pattern'] as $option) {
+                                                            echo '<li><input type="checkbox" name="pattern[]" value="'.$option.'" />'.$option.'</li>';
+                                                        } 
+                                                        ?>
                                                     </ul>
                                                 </div>
                                             </dd>
@@ -228,14 +237,11 @@
                                             <dd>
                                                 <div class="mutliSelect">
                                                     <ul>
-                                                        <li>
-                                                            <input type="checkbox" name="season[]" value="spring" />spring</li>
-                                                        <li>
-                                                            <input type="checkbox" name="season[]" value="summer" />summer</li>
-                                                        <li>
-                                                            <input type="checkbox" name="season[]" value="fall" />fall</li>
-                                                        <li>
-                                                            <input type="checkbox" name="season[]" value="winter" />winter</li>
+                                                        <?php
+                                                        foreach ($filter_dict['season'] as $option) {
+                                                            echo '<li><input type="checkbox" name="season[]" value="'.$option.'" />'.$option.'</li>';
+                                                        } 
+                                                        ?>
                                                     </ul>
                                                 </div>
                                             </dd>
@@ -254,12 +260,11 @@
                                             <dd>
                                                 <div class="mutliSelect">
                                                     <ul>
-                                                        <li>
-                                                            <input type="checkbox" name="type[]" value="typ1" />typ1</li>
-                                                        <li>
-                                                            <input type="checkbox" name="type[]" value="typ2" />typ2</li>
-                                                        <li>
-                                                            <input type="checkbox" name="type[]" value="typ3" />typ3</li>
+                                                        <?php
+                                                        foreach ($filter_dict[$big_type] as $option) {
+                                                            echo '<li><input type="checkbox" name="type[]" value="'.$option.'" />'.$option.'</li>';
+                                                        } 
+                                                        ?>
                                                     </ul>
                                                 </div>
                                             </dd>
@@ -278,16 +283,11 @@
                                             <dd>
                                                 <div class="mutliSelect">
                                                     <ul>
-                                                        <li>
-                                                            <input type="checkbox" name="color[]" value="color1" />color1</li>
-                                                        <li>
-                                                            <input type="checkbox" name="color[]" value="color2" />color2</li>
-                                                        <li>
-                                                            <input type="checkbox" name="color[]" value="color3" />color3</li>
-                                                        <li>
-                                                            <input type="checkbox" name="color[]" value="color4" />color4</li>
-                                                        <li>
-                                                            <input type="checkbox" name="color[]" value="color5" />color5</li>
+                                                        <?php
+                                                        foreach ($filter_dict['color'] as $option) {
+                                                            echo '<li><input type="checkbox" name="color[]" value="'.$option.'" />'.$option.'</li>';
+                                                        } 
+                                                        ?>
                                                     </ul>
                                                 </div>
                                             </dd>
@@ -306,12 +306,11 @@
                                             <dd>
                                                 <div class="mutliSelect">
                                                     <ul>
-                                                        <li>
-                                                            <input type="checkbox" name="size[]" value="1" />1</li>
-                                                        <li>
-                                                            <input type="checkbox" name="size[]" value="2" />2</li>
-                                                        <li>
-                                                            <input type="checkbox" name="size[]" value="3" />3</li>
+                                                        <?php
+                                                        foreach ($filter_dict['size'] as $option) {
+                                                            echo '<li><input type="checkbox" name="size[]" value="'.$option.'" />'.$option.'</li>';
+                                                        } 
+                                                        ?>
                                                     </ul>
                                                 </div>
                                             </dd>
@@ -330,19 +329,19 @@
                                             <dd>
                                                 <div class="mutliSelect">
                                                     <ul>
-                                                        <li>
-                                                            <input type="checkbox" name="material[]" value="250" />2</li>
-                                                        <li>
-                                                            <input type="checkbox" name="material[]" value="3" />3</li>
-                                                        <li>
-                                                            <input type="checkbox" name="material[]" value="4" />4</li>
+                                                        <?php
+                                                        foreach ($filter_dict['material'] as $option) {
+                                                            echo '<li><input type="checkbox" name="material[]" value="'.$option.'" />'.$option.'</li>';
+                                                        } 
+                                                        ?>
                                                     </ul>
                                                 </div>
                                             </dd>
                                         </dl>
                                     </div>
                                 </div>
-                                <input type="text" name="gender[]" value="male" style="display:none">
+                                <input type="text" name="gender" value="<?php echo $_POST['gender'];?>" style="display:none">
+                                <input type="text" name="big_type" value="<?php echo $_POST['big_type'];?>" style="display:none">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-default filter-col"> <span class="glyphicon glyphicon-record"></span>Update</button>
                                 </div>
@@ -360,12 +359,14 @@
                     <?php
                     if (empty($costumes)){
                         echo '<div class="alert alert-warning">
-                                <strong>Warning!</strong> Indicates a warning that might need attention.
+                                <strong>Warning!</strong> Empty result
                             </div>';
                     } 
                     ?>
                 </div>
-                <?php
+
+                <!-- render for thumbnails -->
+                 <?php
                 if (! empty($costumes)){
                     foreach((array)$costumes as $c) {
                         $img_path = "photos/{$c->mainphoto}";
@@ -376,27 +377,37 @@
                     }
                 }   
                 ?>
-                    <!-- test code -->
+
+<!--                 <div class="col-lg-12">
+                <h2>test results</h2>
                 <?php 
-                echo "<h1>";
-                echo $query;
-                echo "</h1>";
-                $keys = array('pattern', 'season', 'type', 'color', 'size', 'material','gender');
+                echo "gender: ".$_POST['gender'].'<br>';
+                echo "big_type: ".$_POST['big_type'].'<br>';
+                echo "minyear: ".$_POST['minyear'].'<br>';
+                echo "maxyear: ".$_POST['maxyear'].'<br>';
+                $keys = array('numrow','pattern', 'season', 'type', 'color', 'size', 'material');
                 foreach ($keys as $key) {
-                    if(!empty($_POST[$key])) {
-                        echo $key;
-                        echo '<br>';
-                        foreach($_POST[$key] as $check) {
-                                echo $check; //echoes the value set in the HTML form for each checked checkbox.
-                                             //so, if I were to check 1, 3, and 5 it would echo value 1, value 3, value 5.
-                                             //in your case, it would echo whatever $row['Report ID'] is equivalent to.
-                        }
-                        echo '<br>';
+                    echo $key.': ';
+                    foreach($_POST[$key] as $check) {
+                        echo $check.', ';
                     }
+                    echo '<br>';
+                }
+                echo '<br><h3>filter dict</h3><br>';
+                foreach ($filter_dict as $key => $value) {
+                    echo $key.": ";
+                    foreach ($value as $v) {
+                        echo $v.",";
+                    }
+                    echo "<br>";
                 }
                 ?>
+                </div>-->
             </div>
+
             <hr>
+            <br>
+            <br>
             <!-- Footer -->
             <footer>
                 <div class="row">
