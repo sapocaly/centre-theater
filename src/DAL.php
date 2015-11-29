@@ -1,0 +1,164 @@
+<?php
+
+/**
+ * Created by PhpStorm.
+ * User: Sapocaly
+ * Date: 11/26/15
+ * Time: 6:14 PM
+ */
+
+// Include DAL
+require_once(dirname(dirname(__FILE__)) . '/conf/config.php');
+
+class DAL
+{
+
+    public function __construct()
+    {
+    }
+
+    private function dbconnect()
+    {
+        $dbconn = pg_connect("host=" . DB_HOST . " dbname=" . DB_DB . " user=" . DB_USER . " password=" . DB_PASSWORD)
+        or die('<br>Could not connect: ' . pg_last_error());
+        //$dbconn = pg_connect("host=turing.centre.edu dbname=theaterDB user=visitorDrama password=Costumes4All")
+        //or die('Could not connect: ' . pg_last_error());
+        return $dbconn;
+    }
+
+    private function query($sql, $class_name)
+    {
+
+        $this->dbconnect();
+        $res = pg_query($sql) or die('Query failed: ' . pg_last_error());
+        if ($res) {
+            if (strpos($sql, 'SELECT') === false) {
+                return true;
+            }
+        } else {
+            if (strpos($sql, 'SELECT') === false) {
+                return false;
+            } else {
+                return null;
+            }
+        }
+
+        $results = array();
+
+        while ($row = pg_fetch_array($res, null, PGSQL_ASSOC)) {
+            $result = new $class_name($row);
+            $results[] = $result;
+        }
+        return $results;
+    }
+
+    public function query_for_all_costume()
+    {
+        $sql = 'SELECT * FROM costume';
+        $results = $this->query($sql, 'Costume');
+        return $results;
+    }
+
+}
+
+class DALQueryResult
+{
+
+    private $_results = array();
+
+    public function __construct()
+    {
+    }
+
+    public function __set($var, $val)
+    {
+        $this->_results[$var] = $val;
+    }
+
+    public function __get($var)
+    {
+        if (isset($this->_results[$var])) {
+            return $this->_results[$var];
+        } else {
+            return null;
+        }
+    }
+}
+
+//all data access object class starts here
+class Costume
+{
+    var $costumeid;
+    var $pattern;
+    var $year;
+    var $gender;
+    var $season;
+    var $description;
+    var $location;
+    var $size;
+    var $material;
+    var $type;
+    var $memo;
+    var $color;
+    var $mainphoto;
+    var $secphoto;
+    var $play;
+
+    public function __construct(array $cfg)
+    {
+        foreach ($cfg as $k => $v) {
+            $this->{$k} = $v;
+        }
+    }
+}
+
+class Option
+{
+    var $field_name;
+    var $value;
+
+    public function __construct(array $cfg)
+    {
+        foreach ($cfg as $k => $v) {
+            $this->{$k} = $v;
+        }
+    }
+}
+
+class Photo
+{
+    var $costumeid;
+    var $filename;
+    var $priority;
+
+    public function __construct(array $cfg)
+    {
+        foreach ($cfg as $k => $v) {
+            $this->{$k} = $v;
+        }
+    }
+}
+
+class UserAccount
+{
+    var $email;
+    var $password;
+    var $wrongcount;
+    var $name;
+    var $lastlogin;
+    var $usergroup;
+
+    public function __construct(array $cfg)
+    {
+        foreach ($cfg as $k => $v) {
+            $this->{$k} = $v;
+        }
+    }
+}
+
+
+$d = new DAL();
+foreach ($d->query_for_all_costume() as $k){
+    echo $k->costumeid;
+}
+?>

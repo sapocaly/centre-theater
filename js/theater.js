@@ -29,10 +29,5 @@ $(".dropdown dt a").on('click', function() {
 
 
 
-$(document).bind('click', function(e) {
-    var $clicked = $(e.target);
-    if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
-});
-
 
 

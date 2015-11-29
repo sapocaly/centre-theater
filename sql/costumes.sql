@@ -1,0 +1,1 @@
+INSERT INTO costume VALUES (2,'strip',1960,'men','spring','test cloths','pearl','32','cotton','long sleeve','hue','red','2.jpg','none');

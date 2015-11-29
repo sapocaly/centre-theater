@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="">
     <title>Centre Theater Amdin</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
@@ -19,18 +19,20 @@
     <link href="css/theater-admin.css" rel="stylesheet">
     <?php
     $section = 'overview';
-    if (!empty($_GET['section'])){
+    if (!empty($_GET['section'])) {
         $section = $_GET['section'];
     }
 
 
-    function select_section($section, $current_section){
+    function select_section($section, $current_section)
+    {
         if ($section == $current_section) {
             echo 'class="active"';
         }
     }
 
-    function render_user(){
+    function render_user()
+    {
         echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <h2 class="sub-header">Users</h2>
                     <div class="table-responsive">
@@ -58,7 +60,8 @@
                 </div>';
     }
 
-    function render_costume(){
+    function render_costume()
+    {
         echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <h2 class="sub-header">Costumes</h2>
                     <div class="table-responsive">
@@ -85,30 +88,35 @@
                     </div>
                 </div>';
     }
-    function render_overview(){
+    function render_overview()
+    {
         echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <h2 class="sub-header">Overview</h2>
                 </div>';
     }
-    function render_schema(){
+    function render_schema()
+    {
         echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <h2 class="sub-header">Manage Schema</h2>
                     <p>manage schema here</p>
                 </div>';
     }
-    function render_addcos(){
+    function render_addcos()
+    {
         echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <h2 class="sub-header">Add Costume</h2>
                     <p>add costume here</p>
                 </div>';
     }
-    function render_adduser(){
+    function render_adduser()
+    {
         echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <h2 class="sub-header">Add User</h2>
                     <p>SUPERUSER can add user here</p>
                 </div>';
     }
-    function render_batch(){
+    function render_batch()
+    {
         echo    '<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <h2 class="sub-header">Barch Upload</h2>
                     <p>you can upload text file here</p>
@@ -142,7 +150,8 @@
                 </ul>
             </div>
             <!-- content -->
-            <?php $func = 'render_'.$section; $func(); ?>
+            <?php $func = 'render_'.$section;
+            $func(); ?>
         </div>
     </div>
     <!-- -->

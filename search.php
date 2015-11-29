@@ -27,7 +27,8 @@
     //Data access obejects
 
     //DAO for costume
-    class Costume{
+    class Costume
+    {
         var $costumeid;
         var $pattern;
         var $year;
@@ -42,8 +43,9 @@
         var $color;
         var $mainphoto;
 
-        public function __construct( array $cfg){
-            foreach($cfg as $k=>$v){
+        public function __construct(array $cfg)
+        {
+            foreach ($cfg as $k => $v) {
                 $this->{$k}=$v;
             }
         }
@@ -52,18 +54,17 @@
 
     //select query builder, naive version
     //TODO: add more features to fit for more complex selections
-    function select_sql($dict) {
-        if ( empty($dict)){
+    function select_sql($dict)
+    {
+        if (empty($dict)) {
             $sql_string = "select * from costume";
-        }
-        else{
+        } else {
             $sql_string = "select * from costume where ";
             foreach ($dict as $k => $v) {
                 $data_type = gettype($v);
-                if ($data_type == "string"){
+                if ($data_type == "string") {
                     $v = "'{$v}'";
-                }
-                elseif ($data_type == "integer" or $data_type == "double") {
+                } elseif ($data_type == "integer" or $data_type == "double") {
                     $v = (string) $v;
                 }
                 $sql_string = "{$sql_string}{$k} = {$v} and ";
@@ -73,8 +74,9 @@
         return $sql_string;
     }
 
-    //thumbnail html render 
-    function render_html_for_thumbnail($path, $desc){
+    //thumbnail html render
+    function render_html_for_thumbnail($path, $desc)
+    {
         return '<div class="col-md-3">           
                 <div class="thumbnail" style="border-style:hidden">
                     <img  class="main" src="'.$path.'" alt="...">
@@ -84,36 +86,64 @@
                 </div>';
     }
 
-    function query_for($query){
+    function query_for($query)
+    {
         $dbconn = pg_connect("host=turing.centre.edu dbname=theaterDB user=visitorDrama password=Costumes4All")
                         or die('Could not connect: ' . pg_last_error());
         $result = pg_query($query) or die('Query failed: ' . pg_last_error());
         return $result;
     }
 
-    function parse_result_for_value($result, $key){
+    function parse_result_for_value($result, $key)
+    {
         $answer = array();
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $answer[] = $line[$key];
-        }    
-        return $answer;    
+        }
+        return $answer;
     }
 
-    function parse_for_filter($big_type){
+    function parse_for_filter($big_type)
+    {
         $answer = array();
         $size_query = "select distinct size from costume where type in (select distinct value from filter where type='".$big_type."')";
         $size_result = query_for($size_query);
         $size_option = parse_result_for_value($size_result, 'size');
-        $answer['size'] = $size_option; 
+        $answer['size'] = $size_option;
         $other_options = array("pattern", "season", $big_type, "color", "material");
         foreach ($other_options as $option) {
             $option_query = "select value from filter where type = '".$option."'";
             $option_result = query_for($option_query);
             $options = parse_result_for_value($option_result, 'value');
-            $answer[$option] = $options;    
+            $answer[$option] = $options;
         }
         return $answer;
     }
+    
+
+    function parse_for_query()
+    {
+        $post_dict = array();
+        $options = array("pattern", "season", "type", "color", "size", "material");
+        foreach ($options as $option) {
+            $option_array = array();
+            $post_options = $_POST[$option];
+            if (is_array($post_options)) {
+                foreach ($post_options as $post_option) {
+                    $option_array[] = $post_option;
+                }
+            } else {
+                $option_array[] = $post_options;
+            }
+            $post_dict[$option] = $option_array;
+        }
+        $post_dict['big_type'] = $_POST['big_type'];
+        $post_dict['minyear'] = $_POST['minyear'];
+        $post_dict['maxyear'] = $_POST['maxyear'];
+        $post_dict['gender'] = $_POST['gender'];
+        return $post_dict;
+    }
+
     ?>
 </head>
 
@@ -122,7 +152,7 @@
 
     <?php
     //default form values to be NULL
-    $pattern = $big_type = $year = $gender = $season = $size = $material = $type = $color = NULL;
+    $pattern = $big_type = $year = $gender = $season = $size = $material = $type = $color = null;
 
     //filter dict
     $dict = array();
@@ -131,46 +161,47 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (! empty($_POST["pattern"])) {
             $pattern = $_POST["pattern"];
-            $dict["pattern"] = $pattern; 
+            $dict["pattern"] = $pattern;
         }
         if (! empty($_POST["year"])) {
             $year = (int)$_POST["year"];
-            $dict["year"] = $year; 
+            $dict["year"] = $year;
         }
         //index
         if (! empty($_POST["gender"])) {
             $gender = $_POST["gender"];
-            $dict["gender"] = $gender;       
+            $dict["gender"] = $gender;
         }
         if (! empty($_POST["season"])) {
             $season = $_POST["season"];
-            $dict["season"] = $season; 
+            $dict["season"] = $season;
         }
         if (! empty($_POST["size"])) {
             $size = $_POST["size"];
-            $dict["size"] = $size; 
+            $dict["size"] = $size;
         }
         if (! empty($_POST["material"])) {
             $material = $_POST["material"];
-            $dict["material"] = $material; 
+            $dict["material"] = $material;
         }
         if (! empty($_POST["type"])) {
             $type = $_POST["type"];
-            $dict["type"] = $type; 
+            $dict["type"] = $type;
         }
         if (! empty($_POST["color"])) {
             $color = $_POST["color"];
-            $dict["color"] = $color; 
+            $dict["color"] = $color;
         }
         //index
         if (! empty($_POST["big_type"])) {
             $big_type = $_POST["big_type"];
             //generate small type
         }
+        $query_post = parse_for_query();
     }
 
 
-    //get 
+    //get
     //$query = select_sql($dict);
     $query = "select * from costume";
     $costumes = array();
@@ -216,8 +247,8 @@
                                                     <ul>
                                                         <?php
                                                         foreach ($filter_dict['pattern'] as $option) {
-                                                            echo '<li><input type="checkbox" name="pattern[]" value="'.$option.'" />'.$option.'</li>';
-                                                        } 
+                                                            echo '<li><input type="checkbox" name="pattern[]" value="'.$option.'"/>'.$option.'</li>';
+                                                        }
                                                         ?>
                                                     </ul>
                                                 </div>
@@ -240,7 +271,7 @@
                                                         <?php
                                                         foreach ($filter_dict['season'] as $option) {
                                                             echo '<li><input type="checkbox" name="season[]" value="'.$option.'" />'.$option.'</li>';
-                                                        } 
+                                                        }
                                                         ?>
                                                     </ul>
                                                 </div>
@@ -263,7 +294,7 @@
                                                         <?php
                                                         foreach ($filter_dict[$big_type] as $option) {
                                                             echo '<li><input type="checkbox" name="type[]" value="'.$option.'" />'.$option.'</li>';
-                                                        } 
+                                                        }
                                                         ?>
                                                     </ul>
                                                 </div>
@@ -286,7 +317,7 @@
                                                         <?php
                                                         foreach ($filter_dict['color'] as $option) {
                                                             echo '<li><input type="checkbox" name="color[]" value="'.$option.'" />'.$option.'</li>';
-                                                        } 
+                                                        }
                                                         ?>
                                                     </ul>
                                                 </div>
@@ -309,7 +340,7 @@
                                                         <?php
                                                         foreach ($filter_dict['size'] as $option) {
                                                             echo '<li><input type="checkbox" name="size[]" value="'.$option.'" />'.$option.'</li>';
-                                                        } 
+                                                        }
                                                         ?>
                                                     </ul>
                                                 </div>
@@ -332,7 +363,7 @@
                                                         <?php
                                                         foreach ($filter_dict['material'] as $option) {
                                                             echo '<li><input type="checkbox" name="material[]" value="'.$option.'" />'.$option.'</li>';
-                                                        } 
+                                                        }
                                                         ?>
                                                     </ul>
                                                 </div>
@@ -357,30 +388,30 @@
                 <div class="col-lg-12">
                     <h3 class="page-header">Search Results</h3>
                     <?php
-                    if (empty($costumes)){
+                    if (empty($costumes)) {
                         echo '<div class="alert alert-warning">
                                 <strong>Warning!</strong> Empty result
                             </div>';
-                    } 
+                    }
                     ?>
                 </div>
 
                 <!-- render for thumbnails -->
-                 <?php
-                if (! empty($costumes)){
-                    foreach((array)$costumes as $c) {
-                        $img_path = "photos/{$c->mainphoto}";
-                        $desc = "{$c->gender} {$c->type} {$c->size}<br>{$c->year}";
-                       //echo $desc;
-                        //$img_path = "http://cache.mrporter.com/images/products/635947/635947_mrp_in_l.jpg";
-                        echo render_html_for_thumbnail($img_path, $desc);
+                <?php
+                    if (! empty($costumes)) {
+                        foreach ((array)$costumes as $c) {
+                            $img_path = "photos/{$c->mainphoto}";
+                            $desc = "{$c->gender} {$c->type} {$c->size}<br>{$c->year}";
+                           //echo $desc;
+                            //$img_path = "http://cache.mrporter.com/images/products/635947/635947_mrp_in_l.jpg";
+                            echo render_html_for_thumbnail($img_path, $desc);
+                        }
                     }
-                }   
                 ?>
 
-<!--                 <div class="col-lg-12">
+                <div class="col-lg-12">
                 <h2>test results</h2>
-                <?php 
+                <?php
                 echo "gender: ".$_POST['gender'].'<br>';
                 echo "big_type: ".$_POST['big_type'].'<br>';
                 echo "minyear: ".$_POST['minyear'].'<br>';
@@ -388,7 +419,7 @@
                 $keys = array('numrow','pattern', 'season', 'type', 'color', 'size', 'material');
                 foreach ($keys as $key) {
                     echo $key.': ';
-                    foreach($_POST[$key] as $check) {
+                    foreach ($_POST[$key] as $check) {
                         echo $check.', ';
                     }
                     echo '<br>';
@@ -401,8 +432,9 @@
                     }
                     echo "<br>";
                 }
+                echo var_dump($query_post);
                 ?>
-                </div>-->
+                </div>
             </div>
 
             <hr>
