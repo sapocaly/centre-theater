@@ -1,3 +1,13 @@
+<?php
+require_once('../src/ye_DAL.php');
+
+$d = new DAL();
+$patterns = $d->query_for_all_pattern_options();
+$types = $d->query_for_all_type_options();
+$colors = $d->query_for_all_color_options();
+$materials = $d->query_for_all_material_options();
+
+?>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h2 class="sub-header">Add Costume</h2>
 
@@ -6,12 +16,12 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="row">
-                        <img id="current_photo" class="thumbnail" src="photos/8_1.jpg"
-                             style="width: 105%;border-style: hidden">
+                        <img id="current_photo" class="thumbnail" src="photos/white.jpg"
+                             style="width: 105%;">
                     </div>
                     <div class="row" style="padding-top: -20px">
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden"
+                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
                                  data-toggle="modal"
                                  data-target="#md1">
                             <!-- Modal -->
@@ -52,7 +62,8 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                                 data-toggle="modal"
                                  data-target="#md2">
                             <!-- Modal -->
                             <div class="modal fade" id="md2" role="dialog">
@@ -78,8 +89,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
-                                                    <button type="button" onclick="reset('#txt2', '#img2')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Upload
+                                                    </button>
+                                                    <button type="button" onclick="reset('#txt2', '#img2')"
+                                                            class="btn btn-default" data-dismiss="modal">Close
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -88,7 +103,8 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                                 data-toggle="modal"
                                  data-target="#md3">
                             <!-- Modal -->
                             <div class="modal fade" id="md3" role="dialog">
@@ -114,8 +130,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
-                                                    <button type="button" onclick="reset('#txt3', '#img3')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Upload
+                                                    </button>
+                                                    <button type="button" onclick="reset('#txt3', '#img3')"
+                                                            class="btn btn-default" data-dismiss="modal">Close
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,7 +144,8 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                                 data-toggle="modal"
                                  data-target="#md4">
                             <!-- Modal -->
                             <div class="modal fade" id="md4" role="dialog">
@@ -150,8 +171,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
-                                                    <button type="button" onclick="reset('#txt4', '#img4')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Upload
+                                                    </button>
+                                                    <button type="button" onclick="reset('#txt4', '#img4')"
+                                                            class="btn btn-default" data-dismiss="modal">Close
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,7 +185,8 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                                 data-toggle="modal"
                                  data-target="#md5">
                             <!-- Modal -->
                             <div class="modal fade" id="md5" role="dialog">
@@ -186,8 +212,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
-                                                    <button type="button" onclick="reset('#txt5', '#img5')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Upload
+                                                    </button>
+                                                    <button type="button" onclick="reset('#txt5', '#img5')"
+                                                            class="btn btn-default" data-dismiss="modal">Close
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,7 +226,8 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                                 data-toggle="modal"
                                  data-target="#md6">
                             <!-- Modal -->
                             <div class="modal fade" id="md6" role="dialog">
@@ -222,8 +253,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
-                                                    <button type="button" onclick="reset('#txt6', '#img6')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Upload
+                                                    </button>
+                                                    <button type="button" onclick="reset('#txt6', '#img6')"
+                                                            class="btn btn-default" data-dismiss="modal">Close
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,10 +290,11 @@
 
                             <div class="col-md-8">
                                 <select class="form-control" name="pattern" id="pattern">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    <?php
+                                    foreach ($patterns as $pattern){
+                                        echo '<option>'.$pattern->value.'</option>';
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -278,10 +314,9 @@
 
                             <div class="col-md-8">
                                 <select class="form-control" name="gender" id="gender">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    <option>Female</option>
+                                    <option>Male</option>
+                                    <option>Unisex</option>
                                 </select>
                             </div>
                         </div>
@@ -302,10 +337,11 @@
 
                             <div class="col-md-8">
                                 <select class="form-control" name="material" id="material">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    <?php
+                                    foreach ($materials as $material){
+                                        echo '<option>'.$material->value.'</option>';
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -316,24 +352,11 @@
 
                             <div class="col-md-8">
                                 <select class="form-control" name="type" id="type">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="padding-top: 10px">
-                        <div class="form-group">
-                            <label for="color" class="col-md-4 control-label">COLOR</label>
-
-                            <div class="col-md-8">
-                                <select class="form-control" name="color" id="color">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    <?php
+                                    foreach ($types as $type){
+                                        echo '<option>'.$type->value.'</option>';
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -347,44 +370,63 @@
                             </div>
                         </div>
                     </div>
-                    <br>
+                    <div class="row" style="padding-top: 10px">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="color-multiselect">COLOR</label>
 
-                    <div class="row">
-                        <div class="col-md-8"></div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                    data-target="#myModal">
-                                SUBMIT
-                            </button>
+                            <div class="col-md-4">
+                                <select class="form-control" name="color[]" id="color-multiselect" multiple="multiple">
+                                    <?php
+                                    foreach ($colors as $color){
+                                        echo '<option value="'.$color->value.'">'.$color->value.'</option>';
+                                    }
+                                    ?>
+                                </select>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog" style="top: 50%;">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary btn-md" data-toggle="modal"
+                                            data-target="#myModal">
+                                        SUBMIT
+                                    </button>
 
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">WARNING</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Do you really want to add this costume?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-default">UPLOAD
-                                            </button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                            </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModal" role="dialog">
+                                        <div class="modal-dialog" style="top: 50%;">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">WARNING</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Do you really want to add this costume?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-default">UPLOAD
+                                                    </button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
+
+                    <br>
                 </div>
-            </div>
-            <div class="col-md-1">
+                <div class="col-md-1">
+                </div>
             </div>
         </form>
     </div>
@@ -415,4 +457,7 @@
         $(img).replaceWith($(img).clone(true));
         $(txt).val('');
     }
+    $(document).ready(function () {
+        $('#color-multiselect').multiselect();
+    });
 </script>

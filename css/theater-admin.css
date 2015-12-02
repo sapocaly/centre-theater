@@ -115,13 +115,7 @@ body {
 }
 
 
-.modal-dialog {
-  position: absolute;
-  left: 30%;
-/ / this same situation is with height - example height : 500 px;
-  top: 50%;
-  margin-top: -250px;
-}
+
 
 .btn-file {
   position: relative;
@@ -147,3 +141,5 @@ input[readonly] {
   background-color: white !important;
   cursor: text !important;
 }
+
+

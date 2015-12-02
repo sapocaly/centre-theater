@@ -17,7 +17,8 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link href="css/theater-base.css" rel="stylesheet">
     <link href="css/theater-admin.css" rel="stylesheet">
-
+    <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
     <?php
     $section = 'overview';
     if (!empty($_GET['section'])) {
@@ -34,31 +35,12 @@
 
     function render_user()
     {
-        echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h2 class="sub-header">Users</h2>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Account</th>
-                                    <th>UserGroup</th>
-                                    <th>Create Time</th>
-                                    <th>Last Login</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>ye.sheng@centre.edu</td>
-                                    <td>SUPERUSER</td>
-                                    <td>2015-11-11 11:11:11</td>
-                                    <td>2015-11-15 15:15:15</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>';
+        echo '  <script>
+                    $(function () {
+                        $("#list_user").load("template/list_user.php");
+                    });
+                </script>
+                <div id="list_user"></div>';
     }
 
     function render_costume()
@@ -71,12 +53,6 @@
                 <div id="list_costume"></div>';
     }
 
-    function render_overview()
-    {
-        echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h2 class="sub-header">Overview</h2>
-                </div>';
-    }
 
     function render_schema()
     {
@@ -90,7 +66,7 @@
     {
         echo '  <script>
                     $(function () {
-                        $("#add_costume").load("template/add_costume.html");
+                        $("#add_costume").load("template/add_costume.php");
                     });
                 </script>
                 <div id="add_costume"></div>';
@@ -98,18 +74,22 @@
 
     function render_adduser()
     {
-        echo '  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h2 class="sub-header">Add User</h2>
-                    <p>SUPERUSER can add user here</p>
-                </div>';
+        echo '  <script>
+                    $(function () {
+                        $("#add_user").load("template/add_user.html");
+                    });
+                </script>
+                <div id="add_user"></div>';
     }
 
     function render_batch()
     {
-        echo '<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h2 class="sub-header">Barch Upload</h2>
-                    <p>you can upload text file here</p>
-                </div>';
+        echo '  <script>
+                    $(function () {
+                        $("#batch_upload").load("template/batch_upload.html");
+                    });
+                </script>
+                <div id="batch_upload"></div>';
     }
 
     ?>
@@ -125,12 +105,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li <?php select_section($section, "overview"); ?>><a href="admin.php?section=overview">Overview <span
-                            class="sr-only">(current)</span></a></li>
-                <li <?php select_section($section, "schema"); ?>><a href="admin.php?section=schema">Attributes
-                        Schema</a></li>
-            </ul>
+
             <ul class="nav nav-sidebar">
                 <li <?php select_section($section, "costume"); ?>><a href="admin.php?section=costume">Costumes</a></li>
                 <li <?php select_section($section, "addcos"); ?>><a href="admin.php?section=addcos">Add Costume</a></li>
@@ -145,6 +120,7 @@
         <?php $func = 'render_' . $section;
         $func(); ?>
     </div>
+
 </div>
 <!-- -->
 

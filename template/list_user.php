@@ -1,29 +1,45 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h2 class="sub-header">Costumes</h2>
+    <?php
+    require_once('../src/ye_DAL.php');
+    $d = new DAL();
+    $users = $d->query_for_all_users();
+    ?>
+    <h2 class="sub-header">Users</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>#</th>
-                <th>Gender</th>
-                <th>Color</th>
-                <th>Type</th>
-                <th>Material</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Wrong Count</th>
+                <th>User Group</th>
+                <th>Create Time</th>
+                <th>Last Login</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><a href="costume.html">2</a></td>
-                <td>M</td>
-                <td>crimson</td>
-                <td>suits</td>
-                <td>cotton</td>
-                <td><!-- Trigger the modal with a button -->
-                    <button data-toggle="modal" data-target="#myModal">DELETE</button>
 
+            <?php
+                foreach ($users as $user){
+                    echo '            <tr>
+                <td>'.$user->email.'</td>
+                <td>'.$user->name.'</td>
+                <td>'.$user->wrongcount.'</td>
+                <td>'.$user->usergroup.'</td>
+                <td>'.$user->createtime.'</td>
+                <td>'.$user->lastlogin.'</td>
+                <td><!-- Trigger the modal with a button -->
+                <div class="row">
+                 <div class="col-md-5" data-toggle="modal" data-target="#delete">
+                 <a>DELETE</a>
+                 </div>
+                 <div class="col-md-7" data-toggle="modal" data-target="#reset">
+                 <a>RESET</a>
+                 </div>
+                </div>
                     <!-- Modal -->
-                    <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal fade" id="delete" role="dialog">
                         <div class="modal-dialog">
 
                             <!-- Modal content-->
@@ -33,7 +49,7 @@
                                     <h4 class="modal-title">WARNING</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Do you really want to delete this?</p>
+                                    <p>Do you really want to delete this user?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" onclick="location.href = '."admin.php?section=user'".'" class="btn btn-default" data-dismiss="modal">Yes</button>
@@ -42,19 +58,9 @@
                             </div>
 
                         </div>
-                    </div></td>
-            </tr>
-            <tr>
-                <td><a href="costume.html">3</a></td>
-                <td>M</td>
-                <td>crimson</td>
-                <td>suits</td>
-                <td>cotton</td>
-                <td><!-- Trigger the modal with a button -->
-                    <button data-toggle="modal" data-target="#myModal">DELETE</button>
-
+                    </div>
                     <!-- Modal -->
-                    <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal fade" id="reset" role="dialog">
                         <div class="modal-dialog">
 
                             <!-- Modal content-->
@@ -64,7 +70,7 @@
                                     <h4 class="modal-title">WARNING</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Do you really want to delete this?</p>
+                                    <p>Do you really want to reset this user?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" onclick="location.href = '."admin.php?section=user'".'" class="btn btn-default" data-dismiss="modal">Yes</button>
@@ -73,27 +79,12 @@
                             </div>
 
                         </div>
-                    </div></td>
-            </tr>
-
+                    </div>
+                    </td>
+            </tr>';
+                }
+            ?>
             </tbody>
         </table>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-
-        </div>
-        <div class="col-md-8">
-            <ul class="pagination" >
-                <li class="disabled"><span>&laquo;</span></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>
-
-    </div>
-</div>
+</div>';

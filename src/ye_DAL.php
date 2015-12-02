@@ -76,17 +76,35 @@ class DAL
         $results = $this->query($sql, 'UserAccount');
         return $results;
     }
-    public function query_for_all_options()
+
+    public function query_for_all_type_options()
     {
-        $sql = 'SELECT * FROM option';
+        $sql = "SELECT * FROM option WHERE field_name in ('clothing', 'shoes', 'accessories')";
         $results = $this->query($sql,'Option');
         return $results;
     }
-    public funtion query_for_index_page($gender,$bigType$,)
-    {
-
-    }
     //
+    public function query_for_all_pattern_options()
+    {
+        $sql = "SELECT * FROM option WHERE  field_name = 'pattern'";
+        $results = $this->query($sql,'Option');
+        return $results;
+    }
+
+    public function query_for_all_color_options()
+    {
+        $sql = "SELECT * FROM option WHERE  field_name = 'color'";
+        $results = $this->query($sql,'Option');
+        return $results;
+    }
+
+    public function query_for_all_material_options()
+    {
+        $sql = "SELECT * FROM option WHERE  field_name = 'material'";
+        $results = $this->query($sql,'Option');
+        return $results;
+    }
+
      public function insert(array $column,$table)
      {
         $schema = '';
@@ -108,7 +126,12 @@ class DAL
         $sql = "INSERT INTO " . $table ."(".$schema.") VALUES(".$values.");";
         $this -> query($sql);
      }
-
+     public function query_for_all_options()
+     {
+        $sql = 'SELECT * FROM option';
+        $results = $this->query($sql,'Option');
+        return $results;
+     }
 
 
     public function ftc_subquery($text)
