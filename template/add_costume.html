@@ -12,155 +12,220 @@
                     <div class="row" style="padding-top: -20px">
                         <div class="col-md-2">
                             <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden"
-                                 data-toggle="modal" data-target="#img1">
+                                 data-toggle="modal"
+                                 data-target="#md1">
                             <!-- Modal -->
-                            <div class="modal fade" id="img1" role="dialog">
+                            <div class="modal fade" id="md1" role="dialog">
                                 <div class="modal-dialog" style="top: 50%;">
+
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h4 class="modal-title">UPLOAD PHOTO</h4>
                                         </div>
-                                        <div class="modal-body">
-                                            <p>Choose the file to upload</p>
-                                        </div>
+
                                         <div class="modal-footer">
-                                    <span class="btn btn-default btn-file">
-                                    Browse <input type="file" name="img1">
-                                    </span>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                            </button>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                        <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Browse&hellip; <input type="file" id="img1" name="img1">
+                        </span>
+                        </span>
+                                                        <input type="text" id="txt1" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Upload
+                                                    </button>
+                                                    <button type="button" onclick="reset('#txt1', '#img1')"
+                                                            class="btn btn-default" data-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden"
-                                 data-toggle="modal" data-target="#img1">
+                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                                 data-target="#md2">
                             <!-- Modal -->
-                            <div class="modal fade" id="img1" role="dialog">
+                            <div class="modal fade" id="md2" role="dialog">
                                 <div class="modal-dialog" style="top: 50%;">
+
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h4 class="modal-title">UPLOAD PHOTO</h4>
                                         </div>
-                                        <div class="modal-body">
-                                            <p>Choose the file to upload</p>
-                                        </div>
+
                                         <div class="modal-footer">
-                                    <span class="btn btn-default btn-file">
-                                    Browse <input type="file" name="img1">
-                                    </span>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                            </button>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                        <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Browse&hellip; <input type="file" id="img2" name="img1">
+                        </span>
+                        </span>
+                                                        <input type="text" id="txt2" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
+                                                    <button type="button" onclick="reset('#txt2', '#img2')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden"
-                                 data-toggle="modal" data-target="#img1">
+                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                                 data-target="#md3">
                             <!-- Modal -->
-                            <div class="modal fade" id="img1" role="dialog">
+                            <div class="modal fade" id="md3" role="dialog">
                                 <div class="modal-dialog" style="top: 50%;">
+
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h4 class="modal-title">UPLOAD PHOTO</h4>
                                         </div>
-                                        <div class="modal-body">
-                                            <p>Choose the file to upload</p>
-                                        </div>
+
                                         <div class="modal-footer">
-                                    <span class="btn btn-default btn-file">
-                                    Browse <input type="file" name="img1">
-                                    </span>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                            </button>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                        <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Browse&hellip; <input type="file" id="img3" name="img3">
+                        </span>
+                        </span>
+                                                        <input type="text" id="txt3" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
+                                                    <button type="button" onclick="reset('#txt3', '#img3')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden"
-                                 data-toggle="modal" data-target="#img1">
+                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                                 data-target="#md4">
                             <!-- Modal -->
-                            <div class="modal fade" id="img1" role="dialog">
+                            <div class="modal fade" id="md4" role="dialog">
                                 <div class="modal-dialog" style="top: 50%;">
+
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h4 class="modal-title">UPLOAD PHOTO</h4>
                                         </div>
-                                        <div class="modal-body">
-                                            <p>Choose the file to upload</p>
-                                        </div>
+
                                         <div class="modal-footer">
-                                    <span class="btn btn-default btn-file">
-                                    Browse <input type="file" name="img1">
-                                    </span>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                            </button>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                        <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Browse&hellip; <input type="file" id="img4" name="img4">
+                        </span>
+                        </span>
+                                                        <input type="text" id="txt4" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
+                                                    <button type="button" onclick="reset('#txt4', '#img4')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden"
-                                 data-toggle="modal" data-target="#img1">
+                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                                 data-target="#md5">
                             <!-- Modal -->
-                            <div class="modal fade" id="img1" role="dialog">
+                            <div class="modal fade" id="md5" role="dialog">
                                 <div class="modal-dialog" style="top: 50%;">
+
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h4 class="modal-title">UPLOAD PHOTO</h4>
                                         </div>
-                                        <div class="modal-body">
-                                            <p>Choose the file to upload</p>
-                                        </div>
+
                                         <div class="modal-footer">
-                                    <span class="btn btn-default btn-file">
-                                    Browse <input type="file" name="img1">
-                                    </span>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                            </button>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                        <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Browse&hellip; <input type="file" id="img5" name="img5">
+                        </span>
+                        </span>
+                                                        <input type="text" id="txt5" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
+                                                    <button type="button" onclick="reset('#txt5', '#img5')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden"
-                                 data-toggle="modal" data-target="#img1">
+                            <img class="thumbnail" src="photos/8_2.jpg" style="width: 135%;border-style: hidden" data-toggle="modal"
+                                 data-target="#md6">
                             <!-- Modal -->
-                            <div class="modal fade" id="img1" role="dialog">
+                            <div class="modal fade" id="md6" role="dialog">
                                 <div class="modal-dialog" style="top: 50%;">
+
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h4 class="modal-title">UPLOAD PHOTO</h4>
                                         </div>
-                                        <div class="modal-body">
-                                            <p>Choose the file to upload</p>
-                                        </div>
+
                                         <div class="modal-footer">
-                                    <span class="btn btn-default btn-file">
-                                    Browse <input type="file" name="img1">
-                                    </span>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                            </button>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                        <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Browse&hellip; <input type="file" id="img6" name="img6">
+                        </span>
+                        </span>
+                                                        <input type="text" id="txt6" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
+                                                    <button type="button" onclick="reset('#txt6', '#img6')" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -324,3 +389,30 @@
         </form>
     </div>
 </div>
+<script>
+    $(document).on('change', '.btn-file :file', function () {
+        var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+    });
+
+    $(document).ready(function () {
+        $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+    });
+    function reset(txt, img) {
+        $(img).replaceWith($(img).clone(true));
+        $(txt).val('');
+    }
+</script>

@@ -19,10 +19,10 @@ class DAL
 
     private function dbconnect()
     {
-        $dbconn = pg_connect("host=" . DB_HOST . " dbname=" . DB_DB . " user=" . DB_USER . " password=" . DB_PASSWORD)
-        or die('<br>Could not connect: ' . pg_last_error());
-        //$dbconn = pg_connect("host=turing.centre.edu dbname=theaterDB user=visitorDrama password=Costumes4All")
-        //or die('Could not connect: ' . pg_last_error());
+        //$dbconn = pg_connect("host=" . DB_HOST . " dbname=" . DB_DB . " user=" . DB_USER . " password=" . DB_PASSWORD)
+        //or die('<br>Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=turing.centre.edu dbname=theaterDB user=visitorDrama password=Costumes4All")
+        or die('Could not connect: ' . pg_last_error());
         return $dbconn;
     }
 
@@ -59,6 +59,47 @@ class DAL
         return $results;
     }
 
+
+    //
+     public function insert(array $column,$table)
+     {
+        $schema = '';
+        $values = '';
+        while($e = current($column))
+        {
+            $k = key($column);
+            if(!(strcmp($k,"costumeid")==0 || strcmp($k,"year")==0))
+            {
+                $e = "'".$e."'";
+            };
+            $schema = $schema.$k.',';
+            $values = $values.$e.',';
+            next($column);
+        }
+
+        $schema = rtrim($schema,',');
+        $values = rtrim($values,',');
+        $sql = "INSERT INTO " . $table ."(".$schema.") VALUES(".$values.");";
+        $this -> query($sql);
+     }
+     public function query_for_all_options()
+     {
+        $sql = 'SELECT * FROM option';
+        $results = $this->query($sql,'Option');
+        return $results;
+     }
+
+
+    public function ftc_subquery($text)
+    {
+        return "SELECT costumeid FROM search_index WHERE document @@ plainto_tsquery('".$text."')ORDER BY ts_rank(document,plainto_tsquery('english','".$text."'))";
+    }
+    public function full_text_search($text)
+    {
+        $sql = "SELECT * FROM costume WHERE costumeid in (SELECT costumeid FROM search_index WHERE document @@ plainto_tsquery('".$text."')ORDER BY ts_rank(document,plainto_tsquery('english','".$text."')));";
+        $results = $this->query($sql,'Costume');
+        return $results;
+    }
 
 
 }
@@ -159,8 +200,20 @@ class UserAccount
 }
 
 
-$d = new DAL();
-foreach ($d->query_for_all_costume() as $k){
-    echo $k->costumeid;
-}
+//$d = new DAL();
+//echo "HI";
+//echo $d->insert(array("pattern"=>"SQUARE","year"=>"1900","gender"=>"Female","season"=>"Summer","description"=>"Test2","location"=>"1st floor","size"=>"XL","material"=>"wool","type"=>"jacket","memo"=>"hehe","color"=>"white","mainphoto"=>"2_1.jpg","secphoto"=>"2_2.jpg","play"=>"godKnows"),"costume");
+//foreach ($d->query_for_all_options() as $k){
+//    echo $k->field_name;
+//}
+//}
+/*
+foreach($d->full_text_search("tshirt") as $k)
+        {
+
+            echo $k->costumeid;
+        }
+
+
+*/
 ?>
