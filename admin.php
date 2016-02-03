@@ -1,4 +1,13 @@
+<?php
+
+session_start();
+if ($_SESSION['usergroup'] == "") {
+    header('Location: noauth.html');
+}
+
+?>
 <!DOCTYPE html>
+<!--Author: Ye.Sheng, Yuchen Liu, Jacob A. Winkler,John Scelzi -->
 <html lang="en">
 
 <head>
@@ -33,6 +42,13 @@
         }
     }
 
+    function new_select_section($section, $current_section)
+    {
+        if ($section == $current_section) {
+            return 'class="active"';
+        }
+    }
+
     function render_user()
     {
         echo '  <script>
@@ -47,7 +63,7 @@
     {
         echo '  <script>
                     $(function () {
-                        $("#list_costume").load("template/list_costume.html");
+                        $("#list_costume").load("template/list_costume.php");
                     });
                 </script>
                 <div id="list_costume"></div>';
@@ -76,29 +92,42 @@
     {
         echo '  <script>
                     $(function () {
-                        $("#add_user").load("template/add_user.html");
+                        $("#add_user").load("template/add_user.php");
                     });
                 </script>
                 <div id="add_user"></div>';
     }
 
-    function render_batch()
-    {
-        echo '  <script>
-                    $(function () {
-                        $("#batch_upload").load("template/batch_upload.html");
-                    });
-                </script>
-                <div id="batch_upload"></div>';
-    }
 
     ?>
 </head>
 
 <body>
+<?php
+$script = '';
+if ($_GET["result"] == 'success') {
+    $script = '<script>
+    window.alert("Upload Success");
+</script>';
+} elseif ($_GET["result"] == 'fail') {
+    $script = '<script>
+    window.alert("Upload Fail");
+</script>';
+}
+echo $script;
+?>
+<?php
+if (!$_GET['msg'] == '') {
+    echo '
+    <script>
+        window.alert("' . $_GET['msg'] . '");
+    </script>
+    ';
+}
+?>
 <script>
     $(function () {
-        $("#navigation_content").load("template/navigation.html");
+        $("#navigation_content").load("template/navigation.php");
     });
 </script>
 <div id="navigation_content"></div>
@@ -109,12 +138,16 @@
             <ul class="nav nav-sidebar">
                 <li <?php select_section($section, "costume"); ?>><a href="admin.php?section=costume">Costumes</a></li>
                 <li <?php select_section($section, "addcos"); ?>><a href="admin.php?section=addcos">Add Costume</a></li>
-                <li <?php select_section($section, "batch"); ?>><a href="admin.php?section=batch">Batch Upload</a></li>
             </ul>
-            <ul class="nav nav-sidebar">
-                <li <?php select_section($section, "user"); ?>><a href="admin.php?section=user">Users</a></li>
-                <li <?php select_section($section, "adduser"); ?>><a href="admin.php?section=adduser">Add Users</a></li>
-            </ul>
+            <?php
+            if ($_SESSION['usergroup'] == "admin") {
+                echo '            <ul class="nav nav-sidebar">
+                <li ' . new_select_section($section, "user") . '><a href="admin.php?section=user">Users</a></li>
+                <li ' . new_select_section($section, "adduser") . '><a href="admin.php?section=adduser">Add Users</a></li>
+            </ul>';
+            }
+            ?>
+
         </div>
         <!-- content -->
         <?php $func = 'render_' . $section;

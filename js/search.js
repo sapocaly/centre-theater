@@ -7,4 +7,5 @@ $(document).ready(function() {
     $('#color-multiselect').multiselect();
     $('#size-multiselect').multiselect();
     $('#material-multiselect').multiselect();
+    $('#gender-multiselect').multiselect();
 });

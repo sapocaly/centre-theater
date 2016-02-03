@@ -1,21 +1,16 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: Sapocaly
- * Date: 11/26/15
- * Time: 6:14 PM
+ * Database access layer
+ * Author: Ye Sheng, Yifan Li
  */
 
-// Include DAL
-require_once(dirname(dirname(__FILE__)) . '/conf/config.php');
+//
 
 class DAL
 {
 
-    public function __construct()
-    {
-    }
+    public function __construct(){}
 
     private function dbconnect()
     {
@@ -25,7 +20,12 @@ class DAL
         or die('Could not connect: ' . pg_last_error());
         return $dbconn;
     }
-
+    /**
+    *query
+    *@param (Srting)$sql: sql command
+    *@param (String)&classname: name of data asscess object class
+    *@return array of data asscess objects
+    */
     private function query($sql, $class_name)
     {
 
@@ -51,10 +51,10 @@ class DAL
         }
         return $results;
     }
-
+    //@return list of all costumes;
     public function query_for_all_costume()
     {
-        $sql = 'SELECT * FROM costume';
+        $sql = 'SELECT * FROM costume ORDER BY costumeid ASC';
         $results = $this->query($sql, 'Costume');
         return $results;
     }
@@ -71,6 +71,27 @@ class DAL
 
     }
 
+    public function delete_photos_by_id($id){
+        $sql = 'DELETE FROM photo WHERE costumeid='.$id;
+        $results = $this->query($sql, 'DALQueryResult');
+        return $results;
+
+    }
+
+    public function delete_costume_by_id($id){
+        $sql = 'DELETE FROM costume WHERE costumeid='.$id;
+        $results = $this->query($sql, 'DALQueryResult');
+        return $results;
+
+    }
+
+    public function delete_user_by_email($email){
+        $sql = "DELETE FROM useraccount WHERE email='".$email."'";
+        $results = $this->query($sql, 'DALQueryResult');
+        return $results;
+
+    }
+
     public function query_for_all_users(){
         $sql = 'SELECT * FROM useraccount';
         $results = $this->query($sql, 'UserAccount');
@@ -82,11 +103,127 @@ class DAL
         $results = $this->query($sql,'Option');
         return $results;
     }
-    public funtion query_for_index_page($gender,$bigType$,)
+    public function query_for_all_type_options()
     {
-
+        $sql = "SELECT * FROM option WHERE field_name in ('clothing', 'shoes', 'accessories')";
+        $results = $this->query($sql,'Option');
+        return $results;
     }
     //
+    public function query_for_all_pattern_options()
+    {
+        $sql = "SELECT * FROM option WHERE  field_name = 'pattern'";
+        $results = $this->query($sql,'Option');
+        return $results;
+    }
+
+    public function query_for_all_color_options()
+    {
+        $sql = "SELECT * FROM option WHERE  field_name = 'color'";
+        $results = $this->query($sql,'Option');
+        return $results;
+    }
+
+    public function query_for_all_material_options()
+    {
+        $sql = "SELECT * FROM option WHERE  field_name = 'material'";
+        $results = $this->query($sql,'Option');
+        return $results;
+    }
+    public function query_for_available_options($option,$subquery)
+    {
+        $sql = "SELECT DISTINCT ".$option." FROM costume WHERE costumeid IN ".$subquery;
+        $this->dbconnect();
+        $res = pg_query($sql) or die('Query failed: ' . pg_last_error());
+        if ($res) {
+            if (strpos($sql, 'SELECT') === false) {
+                return true;
+            }
+        } else {
+            if (strpos($sql, 'SELECT') === false) {
+                return false;
+            } else {
+                return null;
+            }
+        }
+
+        $results = array();
+
+        while ($row = pg_fetch_array($res, null, PGSQL_ASSOC)) {
+
+            $results[] = current($row);
+        }
+        return $results;
+    }
+    //$text:     input from home page
+    //$filters:  return value of parse_for_query() in new_search.php
+    //return array of Costume objects
+    public function query_for_search($text,$filters)
+    {
+        $strings = array();
+        $options = array("pattern", "season", "type",  "size", "material","gender");
+        foreach($options as $s)
+        {   
+            $str = array();
+            foreach($filters[$s] as $e)
+            {
+                if($e!=null)
+                {
+                    $str[] = "'".$e."'";
+                }
+            }
+            if(!empty($str))
+            {
+                $strings[] = $s." IN (".implode(",",$str).") ";
+            }
+        }
+        $color = array();
+        foreach($filters["color"] as $e)
+        {
+            if($e!=null)
+            {
+                $color[] = "color LIKE '%".$e."%' ";
+            }
+        }
+        if(!empty($color))
+        {
+            $strings[] = "(".implode(" OR ",$color).")";
+        }
+        if(!empty($filters["minyear"]))
+        {
+            $strings[] = " year >= ".$filters["minyear"]." ";
+        }
+        if(!empty($filters["maxyear"]))
+        {
+            $strings[] = " year <= ".$filters["maxyear"]." ";
+        }
+        if(!empty($strings))
+        {
+           $strings = implode(" AND ", $strings); 
+           $strings =  " WHERE ".$strings;
+        }
+        else
+        {
+            $strings = "";
+        }
+        if(str_replace(" ","",$text)!="")
+        {
+            $sql = "SELECT * FROM (SELECT * FROM costume WHERE costumeid in (SELECT costumeid FROM search_index WHERE document @@ plainto_tsquery('".$text."')ORDER BY ts_rank(document,plainto_tsquery('english','".$text."')))) AS R".$strings;
+        }
+        else
+        {
+            $sql = "SELECT * FROM costume ".$strings;
+        }
+        $results = $this->query($sql,'Costume');
+        //echo $sql;
+        return $results;
+    }
+
+    /**
+     * Insert Into Database
+     *@param (array)$column: array with format ( attribute => value), attributes need to match with the corresponding table
+     *@param (String)$table: name of table    
+     */
      public function insert(array $column,$table)
      {
         $schema = '';
@@ -107,14 +244,48 @@ class DAL
         $values = rtrim($values,',');
         $sql = "INSERT INTO " . $table ."(".$schema.") VALUES(".$values.");";
         $this -> query($sql);
+        $this -> update_DB_index();
+     }
+    /**
+     *Update table
+     *@param (array)$column: array with format ( attribute => value), attributes need to match with the corresponding table
+     *@param (String)$table: name of table    
+     *@param (String)$pkey: name of primary key for table
+     *@param $pkeyvalue: value of the key
+     */
+     public function update(array $column,$table,$pkey,$pkeyvalue)
+     {
+        $s = '';
+        while($e = current($column))
+        {
+            $k = key($column);
+            if(!(strcmp($k,"costumeid")==0 || strcmp($k,"year")==0))
+            {
+                $e = "'".$e."'";
+            };
+            $s = $s.$k.' = '.$e.',';
+            next($column);
+        }
+
+        $s = rtrim($s,',');
+        $sql = "UPDATE " .$table." SET ".$s." WHERE ".$pkey." = ".$pkeyvalue;
+        //echo $sql;
+        $this -> query($sql);
+        $this -> update_DB_index();
      }
 
-
-
-    public function ftc_subquery($text)
+     //rebuild search Index
+     public function update_DB_index()
+     {
+        $this -> query("REFRESH MATERIALIZED VIEW search_index;");
+     }
+    //@param ()
+    //@return (String) subquery that select costumeid with full text search accroding to the input text.
+    public function fts_subquery($text)
     {
-        return "SELECT costumeid FROM search_index WHERE document @@ plainto_tsquery('".$text."')ORDER BY ts_rank(document,plainto_tsquery('english','".$text."'))";
+        return "(SELECT costumeid FROM search_index WHERE document @@ plainto_tsquery('".$text."')ORDER BY ts_rank(document,plainto_tsquery('english','".$text."')));";
     }
+    //@return (Costume) return array of costume objects by full text search
     public function full_text_search($text)
     {
         $sql = "SELECT * FROM costume WHERE costumeid in (SELECT costumeid FROM search_index WHERE document @@ plainto_tsquery('".$text."')ORDER BY ts_rank(document,plainto_tsquery('english','".$text."')));";
@@ -229,7 +400,7 @@ class UserAccount
 //}
 //}
 /*
-foreach($d->full_text_search("tshirt") as $k)
+foreach($d->full_text_search("tshirt") as $qk)
         {
 
             echo $k->costumeid;
@@ -237,4 +408,5 @@ foreach($d->full_text_search("tshirt") as $k)
 
 
 */
+//$d -> update(array("pattern" => "houndstooth"),"costume","costumeid",29)
 ?>

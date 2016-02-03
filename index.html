@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+<!-- Author: Ye Sheng, Yifan Li-- >
 <html lang="en">
 
 <head>
     <!-- Theme Made By www.w3schools.com - No Copyright -->
-    <title>Centre Theater</title>
+    <title>Centre College Drama Center</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -27,29 +28,18 @@
 <br>
 <script>
     $(function () {
-        $("#navigation_content").load("template/navigation.html");
+        $("#navigation_content").load("template/navigation.php");
     });
 </script>
 <div id="navigation_content"></div>
 <div class="jumbotron text-center">
-    <h1>Centre Theater</h1>
+    <h1>Drama Center</h1>
 
     <p>Search Your Costume Here!</p>
-
+    <br>
     <form class="form-inline" action="new_search.php" method="post">
-        <div class="form-group">
-            <select name="gender" class="form-control">
-                <option value="F">FEMALE</option>
-                <option value="M">MALE</option>
-                <option selected="selected" value="U">UNISEX</option>
-            </select>
-            <select name="big_type" class="form-control">
-                <option selected="selected" value="clothing">CLOTHING</option>
-                <option value="shoes">SHOES</option>
-                <option value="accessories">ACCESSORIES</option>
-            </select>
-        </div>
-        <input type="text" name="description" class="form-control" size="50" placeholder="Description">
+        &nbsp;&nbsp;&nbsp;
+        <input type="text" name="description" class="form-control" size=70" placeholder="Type Here..." >
         <button type="submit" class="btn btn-danger">search</button>
     </form>
 </div>

@@ -1,4 +1,5 @@
 <!doctype html>
+<!--Author: Ye.Sheng,Boting Li, Jacob A. Winkler,John Scelzi -->
 <html class="no-js" lang="en">
 <head>
     <!-- Theme Made By www.w3schools.com - No Copyright -->
@@ -27,12 +28,12 @@
 <body>
 <script>
     $(function () {
-        $("#navigation_content").load("template/navigation.html");
+        $("#navigation_content").load("template/navigation.php");
     });
 </script>
 <div id="navigation_content"></div>
 <?php
-require_once('src/ye_DAL.php');
+require_once('src/DAL.php');
 $id = $_GET['id'];
 
 $d = new DAL();
@@ -60,7 +61,7 @@ $materials = $d->query_for_all_material_options();
 
 
 <div class="container">
-    <form action="#" method="post" enctype="multipart/form-data">
+    <form action="editItem.php" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-5">
@@ -276,7 +277,7 @@ $materials = $d->query_for_all_material_options();
                     <div class="form-group">
                         <div class="col-md-4">COLOR</div>
                         <div class="col-md-4">
-                            <select class="form-control" id="color-multiselect" multiple="multiple">
+                            <select class="form-control" name="color[]" id="color-multiselect" multiple="multiple">
                                 <?php
                                     $color_str = $cos->color;
                                     foreach ($colors as $color){
@@ -327,6 +328,7 @@ $materials = $d->query_for_all_material_options();
                         </div>
                     </div>
                 </div>
+                <input type="text" name="id" value="<?php echo $_GET['id']; ?>" style="display:none">
                 <br>
             </div>
             <div class="col-md-1">

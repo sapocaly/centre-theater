@@ -1,5 +1,5 @@
 <?php
-require_once('../src/ye_DAL.php');
+require_once('../src/DAL.php');
 
 $d = new DAL();
 $patterns = $d->query_for_all_pattern_options();
@@ -8,20 +8,21 @@ $colors = $d->query_for_all_color_options();
 $materials = $d->query_for_all_material_options();
 
 ?>
+
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h2 class="sub-header">Add Costume</h2>
 
     <div class="container">
-        <form action="#" method="post" enctype="multipart/form-data">
+        <form action="webUpload.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-5">
                     <div class="row">
-                        <img id="current_photo" class="thumbnail" src="photos/white.jpg"
+                        <img id="current_photo" class="thumbnail" src="http://placehold.it/500x500"
                              style="width: 105%;">
                     </div>
                     <div class="row" style="padding-top: -20px">
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                            <img class="thumbnail" src="http://placehold.it/500x500" style="width: 135%;"
                                  data-toggle="modal"
                                  data-target="#md1">
                             <!-- Modal -->
@@ -62,7 +63,7 @@ $materials = $d->query_for_all_material_options();
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                            <img class="thumbnail" src="http://placehold.it/500x500" style="width: 135%;"
                                  data-toggle="modal"
                                  data-target="#md2">
                             <!-- Modal -->
@@ -103,7 +104,7 @@ $materials = $d->query_for_all_material_options();
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                            <img class="thumbnail" src="http://placehold.it/500x500" style="width: 135%;"
                                  data-toggle="modal"
                                  data-target="#md3">
                             <!-- Modal -->
@@ -144,7 +145,7 @@ $materials = $d->query_for_all_material_options();
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                            <img class="thumbnail" src="http://placehold.it/500x500" style="width: 135%;"
                                  data-toggle="modal"
                                  data-target="#md4">
                             <!-- Modal -->
@@ -185,7 +186,7 @@ $materials = $d->query_for_all_material_options();
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                            <img class="thumbnail" src="http://placehold.it/500x500" style="width: 135%;"
                                  data-toggle="modal"
                                  data-target="#md5">
                             <!-- Modal -->
@@ -226,7 +227,7 @@ $materials = $d->query_for_all_material_options();
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <img class="thumbnail" src="photos/white.jpg" style="width: 135%;"
+                            <img class="thumbnail" src="http://placehold.it/500x500" style="width: 135%;"
                                  data-toggle="modal"
                                  data-target="#md6">
                             <!-- Modal -->
@@ -304,7 +305,7 @@ $materials = $d->query_for_all_material_options();
                             <label for="year" class="col-md-4 control-label">YEAR</label>
 
                             <div class="col-md-8">
-                                <input type="number" name="year" class="form-control" id="year" placeholder="year">
+                                <input type="number" name="year" class="form-control" id="year" min="0", max="9999" placeholder="year" value="2015">
                             </div>
                         </div>
                     </div>
@@ -375,7 +376,7 @@ $materials = $d->query_for_all_material_options();
                             <label class="col-md-4 control-label" for="color-multiselect">COLOR</label>
 
                             <div class="col-md-4">
-                                <select class="form-control" name="color[]" id="color-multiselect" multiple="multiple">
+                                <select class="form-control" name = "color[]" id="color-multiselect" multiple="multiple">
                                     <?php
                                     foreach ($colors as $color){
                                         echo '<option value="'.$color->value.'">'.$color->value.'</option>';

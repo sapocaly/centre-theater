@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+<!--Author: Ye.Sheng, Jacob A. Winkler,John Scelzi -->
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -14,7 +18,7 @@
 </head>
 <body>
 <?php
-require_once('src/ye_DAL.php');
+require_once('src/DAL.php');
 $id = $_GET['id'];
 
 $d = new DAL();
@@ -23,7 +27,7 @@ $photos = $d->query_for_photos_by_id($id);
 ?>
 <script>
     $(function () {
-        $("#navigation_content").load("template/navigation.html");
+        $("#navigation_content").load("template/navigation.php");
     });
 </script>
 <div id="navigation_content"></div>
@@ -101,9 +105,14 @@ $photos = $d->query_for_photos_by_id($id);
                     <div class="col-md-4">MEMO:</div><div class="col-md-8"><?php  echo $cos->memo; ?></div>
                 </div>
                 <hr style="BORDER-TOP: #cccccc 1px solid;margin: 0em">
-                <div class="row">
-                    <div class="col-md-10"></div><div class="col-md-2"><button type="button" class="btn btn-primary btn-sm " style="border-radius: 0;background-color: black">Edit</button></div>
-                </div>
+                <?php
+                if(!$_SESSION['usergroup']==""){
+                    echo '                <div class="row">
+                    <div class="col-md-10"></div><div class="col-md-2"><a type="button" href="edit_costume.php?id='.$cos->costumeid.'" class="btn btn-primary btn-sm " style="border-radius: 0;background-color: black">Edit</a></div>
+                </div>';
+                }
+                ?>
+
             </div>
         </div>
         <div class="col-md-1">
